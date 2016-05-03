@@ -40,19 +40,33 @@ defmodule FacebookMessenger.Optin do
   }
 end
 
+defmodule FacebookMessenger.Postback do
+    @moduledoc """
+    Facebook postback structure
+    """
+
+    @derive [Poison.Encoder]
+    defstruct [:payload]
+
+    @type t :: %FacebookMessenger.Postback{
+        payload: String.t
+    }
+end
+
 defmodule FacebookMessenger.Messaging do
   @moduledoc """
   Facebook messaging structure, contains the sender, recepient and message info
   """
   @derive [Poison.Encoder]
-  defstruct [:sender, :recipient, :timestamp, :message, :optin]
+  defstruct [:sender, :recipient, :timestamp, :message, :optin, :postback]
 
   @type t :: %FacebookMessenger.Messaging{
     sender: FacebookMessenger.User.t,
     recipient: FacebookMessenger.User.t,
     timestamp: integer,
     message: FacebookMessenger.Message.t,
-    optin: FacebookMessenger.Optin.t
+    optin: FacebookMessenger.Optin.t,
+    postback: FacebookMessenger.Postback.t
   }
 end
 
@@ -123,7 +137,8 @@ defmodule FacebookMessenger.Response do
       "sender": %FacebookMessenger.User{},
       "recipient": %FacebookMessenger.User{},
       "message": %FacebookMessenger.Message{},
-      "optin": %FacebookMessenger.Optin{}
+      "optin": %FacebookMessenger.Optin{},
+      "postback": %FacebookMessenger.Postback{}
     }
     %FacebookMessenger.Response{
       "entry": [%FacebookMessenger.Entry{
