@@ -53,7 +53,7 @@ defmodule FacebookMessenger.Sender do
     "https://graph.facebook.com/v2.6/me/messages?#{query}"
   end
 
-  defp craete_message(%{} = message) do
+  defp create_message(%{} = message) do
       message
   end
 
