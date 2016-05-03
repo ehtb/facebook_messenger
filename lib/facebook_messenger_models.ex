@@ -56,6 +56,18 @@ defmodule FacebookMessenger.Entry do
   }
 end
 
+defmodule FacebookMessenger.Optin do
+    @moduledoc """
+    Facebook optin structure
+    """
+    @derive [Poison.Encoder]
+    defstruct [:ref]
+
+    @type t :: %FacebookMessenger.Optin{
+        ref: String.t
+    }
+end
+
 defmodule FacebookMessenger.Response do
   @moduledoc """
   Facebook messenger response structure
@@ -109,6 +121,7 @@ defmodule FacebookMessenger.Response do
       "sender": %FacebookMessenger.User{},
       "recipient": %FacebookMessenger.User{},
       "message": %FacebookMessenger.Message{},
+      "optin": %FacebookMessenger.Optin{}
     }
     %FacebookMessenger.Response{
       "entry": [%FacebookMessenger.Entry{
