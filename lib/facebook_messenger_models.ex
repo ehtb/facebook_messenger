@@ -38,7 +38,8 @@ defmodule FacebookMessenger.Messaging do
     sender: FacebookMessenger.User.t,
     recipient: FacebookMessenger.User.t,
     timestamp: integer,
-    message: FacebookMessenger.Message.t
+    message: FacebookMessenger.Message.t,
+    optin: FacebookMessenger.Optin.t
   }
 end
 
