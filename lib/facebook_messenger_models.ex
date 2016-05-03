@@ -27,12 +27,25 @@ defmodule FacebookMessenger.User do
   }
 end
 
+defmodule FacebookMessenger.Optin do
+  @moduledoc """
+  Facebook user structure
+  """
+
+  @derive [Poison.Encoder]
+  defstruct [:ref]
+
+  @type t :: %FacebookMessenger.Optin{
+    ref: String.t
+  }
+end
+
 defmodule FacebookMessenger.Messaging do
   @moduledoc """
   Facebook messaging structure, contains the sender, recepient and message info
   """
   @derive [Poison.Encoder]
-  defstruct [:sender, :recipient, :timestamp, :message]
+  defstruct [:sender, :recipient, :timestamp, :message, :optin]
 
   @type t :: %FacebookMessenger.Messaging{
     sender: FacebookMessenger.User.t,
@@ -55,18 +68,6 @@ defmodule FacebookMessenger.Entry do
     messaging: FacebookMessenger.Messaging.t,
     time: integer
   }
-end
-
-defmodule FacebookMessenger.Optin do
-    @moduledoc """
-    Facebook optin structure
-    """
-    @derive [Poison.Encoder]
-    defstruct [:ref]
-
-    @type t :: %FacebookMessenger.Optin{
-        ref: String.t
-    }
 end
 
 defmodule FacebookMessenger.Response do
