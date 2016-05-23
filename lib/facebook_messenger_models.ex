@@ -1,3 +1,17 @@
+defmodule FacebookMessenger.Attachment do
+  @moduledoc """
+  Messenger attachment structure
+  """
+  @derive [Poison.Encoder]
+  defstruct [:type, :title, :payload, :url]
+
+  @type t :: %FacebookMessenger.Attachment{
+    type: atom,
+    title: String.t,
+    payload: %{},
+    url: String.t
+  }
+end
 
 defmodule FacebookMessenger.Message do
   @moduledoc """
@@ -5,12 +19,13 @@ defmodule FacebookMessenger.Message do
   """
 
   @derive [Poison.Encoder]
-  defstruct [:mid, :seq, :text]
+  defstruct [:mid, :seq, :text, :attachments]
 
   @type t :: %FacebookMessenger.Message{
     mid: String.t,
     seq: integer,
-    text: String.t
+    text: String.t,
+    attachments: [FacebookMessenger.Attachment.t]
   }
 end
 
@@ -121,6 +136,17 @@ defmodule FacebookMessenger.Response do
   end
 
   @doc """
+  Return a list of attachments from a `FacebookMessenger.Response`
+  """
+  @spec message_attachments(FacebookMessenger.Response) :: [FacebookMessenger.Attachment.t]
+  def message_attachments(%{entry: entries}) do
+    messaging =
+    Enum.flat_map(entries, &Map.get(&1, :messaging))
+    |> Enum.map(&(&1 |> Map.get(:message)))
+    |> Enum.flat_map(&Map.get(&1, :attachments))
+  end
+
+  @doc """
   Retrun an list of message sender Ids from a `FacebookMessenger.Response`
   """
   @spec message_senders(FacebookMessenger.Response) :: [String.t]
@@ -136,7 +162,9 @@ defmodule FacebookMessenger.Response do
     %FacebookMessenger.Messaging{
       "sender": %FacebookMessenger.User{},
       "recipient": %FacebookMessenger.User{},
-      "message": %FacebookMessenger.Message{},
+      "message": %FacebookMessenger.Message{
+        "attachments": [%FacebookMessenger.Attachment{}]
+      },
       "optin": %FacebookMessenger.Optin{},
       "postback": %FacebookMessenger.Postback{}
     }
