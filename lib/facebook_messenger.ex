@@ -36,15 +36,15 @@ defmodule FacebookMessenger do
   - `params`: Parameters sent from facebook
   """
   def parse_message(params) when is_bitstring(params) do
+    Logger.info("Recevied messsages #{inspect(params)}")
     response = FacebookMessenger.Response.parse(params)
-    Logger.info("Recevied messsages #{inspect(response)}")
 
     {:ok, response}
   end
 
   def parse_message(%{"object" => "page"} = params) do
+    Logger.info("Recevied messsages #{inspect(params)}")
     response = FacebookMessenger.Response.parse(params)
-    Logger.info("Recevied messsages #{inspect(response)}")
 
     {:ok, response}
   end
