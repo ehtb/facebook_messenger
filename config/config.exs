@@ -12,7 +12,7 @@ case Mix.env do
       challenge_verification_token: "VERIFY_TOKEN",
       endpoint: "/messenger/webhook",
       request_manager: FacebookMessenger.RequestManager.Mock,
-      responder: FacebookMessenger.Responder.Mock
+      api_uri: "https://graph.facebook.com/v2.6/me"
 
   :dev ->
     config :facebook_messenger,
@@ -20,7 +20,7 @@ case Mix.env do
       challenge_verification_token: "VERIFY_TOKEN",
       endpoint: "/messenger/webhook",
       request_manager: FacebookMessenger.RequestManager,
-      responder: FacebookMessenger.Responder
+      api_uri: "https://graph.facebook.com/v2.6/me"
 
   _ -> true
 end
