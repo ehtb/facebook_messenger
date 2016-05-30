@@ -30,12 +30,12 @@ defmodule Sample.Router do
 
   forward "/messenger/webhook",
     to: FacebookMessenger.Router,
-    message_received: &Sample.Router.message/1
+    message_received: Enum.each(&Sample.Router.message/1)
 
-  def message(msg) do
-    text = FacebookMessenger.Response.message_texts(msg) |> hd
-    sender = FacebookMessenger.Response.message_senders(msg) |> hd
-    FacebookMessenger.Sender.send(sender, text)
+  def message(message) do
+    // do work
+    // after
+    FacebookMessenger.Sender.send(sender, payload)
   end
 enda
 
@@ -62,9 +62,3 @@ If you use phoenix framework in your project, then you need the phoenix version 
 
 - A sample facebook echo bot with plug can be found here. https://github.com/oarrabi/plug_facebook_echo_bot
 - For the phoenix echo bot, https://github.com/oarrabi/phoenix_facebook_echo_bot
-
-## Future Improvements
-
-- [ ] Handle other types of facebook messages
-- [ ] Support sending facebook structure messages
-- [ ] Handle facebook postback messages
