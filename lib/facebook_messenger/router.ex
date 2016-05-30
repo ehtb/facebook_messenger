@@ -18,7 +18,6 @@ defmodule FacebookMessenger.Router do
   end
 
   defp do_challenge(conn, _, opts) do
-
     conn = fetch_query_params(conn)
     case FacebookMessenger.check_challenge(conn.query_params) do
       {:ok, challange} ->
@@ -58,5 +57,4 @@ defmodule FacebookMessenger.Router do
     received.(message)
   end
   defp inform_message(_, _), do: nil
-
 end

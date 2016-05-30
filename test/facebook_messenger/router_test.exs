@@ -20,7 +20,6 @@ defmodule MockRouter do
     FacebookMessenger.Sender.send(sender, text)
     send(self, 3)
   end
-
 end
 
 defmodule FacebookMessenger.Router.Test do
@@ -31,11 +30,13 @@ defmodule FacebookMessenger.Router.Test do
     conn = conn(:get, "/wrong")
     router = FacebookMessenger.Router.init([])
     {status, _, body} = FacebookMessenger.Router.call(conn, router) |> sent_resp
+
     assert status == 500
 
     conn = conn(:get, "/messenger/webhook")
     router = FacebookMessenger.Router.init([])
     {status, _, body} = FacebookMessenger.Router.call(conn, router) |> sent_resp
+
     assert status == 500
   end
 
@@ -43,6 +44,7 @@ defmodule FacebookMessenger.Router.Test do
     conn = conn(:get, "/messenger/webhook?hub.mode=subscribe&hub.challenge=914942744&hub.verify_token=VERIFY_TOKEN")
     router = FacebookMessenger.Router.init([])
     {status, _, body} = FacebookMessenger.Router.call(conn, router) |> sent_resp
+
     assert status == 200
     assert body == "914942744"
   end
@@ -94,7 +96,7 @@ defmodule FacebookMessenger.Router.Test do
     router = MockRouter.init([])
     {status, _, body} = MockRouter.call(conn, router) |> sent_resp
 
-    assert_received %{body: "{\"recipient\":{\"id\":\"USER_ID\"},\"message\":{\"text\":\"hello\"}}", url: "https://graph.facebook.com/v2.6/me/messages?access_token=PAGE_TOKEN"}
+    assert_received %{body: "{\"recipient\":{\"id\":\"USER_ID\"},\"message\":{\"text\":\"hello 1\"}}", url: "https://graph.facebook.com/v2.6/me/messages?access_token=PAGE_TOKEN"}
   end
 
   test "challange: 200 calls the success function" do
@@ -102,6 +104,7 @@ defmodule FacebookMessenger.Router.Test do
     conn = conn(:get, "/messenger/webhook?hub.mode=subscribe&hub.challenge=914942744&hub.verify_token=VERIFY_TOKEN")
     router = MockRouter.init([])
     MockRouter.call(conn, router)
+
     assert_received 1
   end
 
@@ -109,6 +112,7 @@ defmodule FacebookMessenger.Router.Test do
     conn = conn(:get, "/messenger/webhook?hub.mode=subscribe&hub.challenge=914942744&hub.verify_token=VERIFY_TOKEN2")
     router = MockRouter.init([])
     MockRouter.call(conn, router)
+
     assert_received 2
   end
 
@@ -118,6 +122,7 @@ defmodule FacebookMessenger.Router.Test do
 
     router = MockRouter.init([])
     {status, _, body} = MockRouter.call(conn, router) |> sent_resp
+    
     assert_received 3
   end
 end
